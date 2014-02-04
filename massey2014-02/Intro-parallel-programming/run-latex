@@ -1,0 +1,4 @@
+pdflatex -interaction=batchmode parallel-story.tex
+pdflatex -interaction=batchmode parallel-story.tex
+pdflatex -interaction=nonstopmode parallel-story.tex
+rm *.aux *.out *.log *.nav *.vrb
