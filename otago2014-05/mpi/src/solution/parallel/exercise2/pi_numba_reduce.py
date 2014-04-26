@@ -9,7 +9,7 @@ from mpi4py import MPI
 from numba import jit
 
 @jit
-def loop(num_steps, begin, end):
+def loop(num_steps, begin,end):
 	step = 1.0/num_steps
 	sum = 0
 
