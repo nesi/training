@@ -4,7 +4,7 @@ rank = comm.Get_rank()
 size = comm.Get_size()
 
 if rank == 0:
-	for i in range(size):
+	for i in range(1,size):
 		sendMsg = "Hello, Rank %d" %i
 		comm.send(sendMsg, dest=i)
 else:
