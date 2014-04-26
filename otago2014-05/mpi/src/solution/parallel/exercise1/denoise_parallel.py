@@ -18,7 +18,7 @@ outputDirg = os.path.join(curPath,'denoised')
 
 def loop(imgFiles):
 	for f in imgFiles:
-		img = img_as_float(data.load(os.path.join(inputDir,f))
+		img = img_as_float(data.load(os.path.join(inputDir,f)))
 		startTime = time.time()
 		img = filter.denoise_bilateral(img, sigma_range=0.1, sigma_spatial=3)
 		io.imsave(os.path.join(outputDirg,f), img)
@@ -32,7 +32,7 @@ def parallel():
 	
 	numFiles = 100/size #number of files this process will handle
 	imgFiles = ["%.4d.jpg"%x for x in range(rank*numFiles+1,(rank+1)*numFiles+1)] 
-	loop(imgFiles,rank)
+	loop(imgFiles)
 	print("Process %d: Total time %f seconds" %(rank, time.time() - totalStartTime))
 
 if __name__=='__main__':
