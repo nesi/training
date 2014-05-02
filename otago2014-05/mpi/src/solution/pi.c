@@ -15,7 +15,7 @@ void Pi(int num_steps) {
   printf("Pi with %d steps is %.20f in %f secs\n", num_steps, pi,(float)(end-start)/CLOCKS_PER_SEC);
 }
 
-void main() {
+int main() {
   Pi(100000000);
-
+  return 0;
 }
