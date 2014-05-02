@@ -5,7 +5,6 @@ Created on Thu Mar 21 13:21:24 2013
 @author: Sung Bae
 """
 import time
-@profile
 def Pi(num_steps):
 	start = time.time()
 	step = 1.0/num_steps

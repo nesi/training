@@ -15,45 +15,34 @@ size = comm.Get_size()
 l=[] #needs initalization for all processes to know what "l" is
 
 if rank == 0:
-	l = range(size)
-x=comm.scatter(l, root=0)
+	l = range(size) #l is [0,1,2,3] at rank 0 if size = 4
+x=comm.scatter(l, root=0) #rank 0 scatters l and each process gets one element from l.
 print "Rank %d received a scattered int "%rank +str(x)
 
-x = x*10
+x = x*10 ##each process updates the value
 
 l2 = comm.gather(x,root=0)
 if rank == 0:
 	print "Rank %d collected a list" %rank + str(l2)
 	#l2 is None at other ranks
  
-	
 
-s=""
-if rank == 0:
-	s="abcdefghijklmnopqrstuvwxyz"
-	s=s[:size]
-c=comm.scatter(s, root=0)
-print "Rank %d: received a scattered character "%rank +str(c)
-
-c=c*10
-
-s2 = comm.gather(c,root=0)
-if rank == 0:
-	print "Rank %d collected a list of strings" %rank + str(s2)
-
+# you can scatter a list of lists
 l=[]
 if rank == 0:
 	for i in range(size):
 		l.append([i]*3)
-x=comm.scatter(l, root=0)
+	#l is [ [0,0,0],[1,1,1],[2,2,2],[3,3,3]] at rank 0 if size = 4
+x=comm.scatter(l, root=0) #rank 0 scatters l and each process gets one element from l
 
 print "Rank %d received a scattered list "%rank + str(x)
 
-x= x*2
+x= x*2 #double x. eg. [0,0,0] becomes [0,0,0,0,0,0]
 
 l2 = comm.gather(x,root=0)
 if rank == 0:
 	print "Rank %d collected a list" %rank + str(l2)
 	#l2 is None at other ranks
- 
+ 	
+
 
