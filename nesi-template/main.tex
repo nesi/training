@@ -1,0 +1,305 @@
+\documentclass[aspectratio=169]{beamer}
+%\documentclass[aspectratio=169,notes=only]{beamer}
+\usepackage[english]{layout}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, soul, color, multicol, type1cm, verbatim, latexsym, dsfont, float, listings,alltt,tikz, lmodern, textcomp}
+\usepackage[official]{eurosym}
+\usepackage[export]{adjustbox}
+\usepackage[caption = false]{subfig}
+%\usepackage{beamerthemesplit}
+%\usetheme{Frankfurt}
+\usecolortheme{lily}
+%\usefonttheme{structuresmallcapsserif}
+\usefonttheme{professionalfonts}
+\setbeamercovered{transparent}
+
+%NeSI Colors <-------------------------------------------------------------------------------------
+\usecolortheme{lily}
+\usecolortheme[RGB={47, 68, 71}]{structure} 
+\definecolor{nesidark}{HTML}{2F4447}
+\definecolor{nesilight}{HTML}{CED9DF}
+\definecolor{nesigrey}{gray}{0.7}
+\definecolor{nesilightgrey}{gray}{0.98}
+\definecolor{nesidarkgrey}{gray}{0.3}
+\definecolor{nesiblue}{HTML}{2B9FC2}
+\setbeamercolor{block title}{fg=black,bg=nesigrey}
+\setbeamercolor{block body}{bg=nesilightgrey,fg=nesidarkgrey}
+\setbeamercolor{block body alerted}{bg=white,fg=black}
+\setbeamercolor{alerted text}{bg=white,fg=black}
+\addtobeamertemplate{frametitle}{\vskip+1.2ex}{}
+%NeSI Custom Code Hightlight <---------------------------------------------------------------------------------------
+\lstdefinestyle{customcode}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  xleftmargin=\parindent,
+  showstringspaces=false,
+  basicstyle=\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+%NeSI Title <---------------------------------------------------------------------------------------
+\setbeamerfont{title}{size=\huge}
+\frenchspacing
+\hyphenation{NeSI}
+%NeSI Template parameters <-------------------------------------------------------------------------
+\setbeamertemplate{blocks}[default]
+\useinnertheme{circles}
+\setbeamertemplate{title page}[default][center,rounded=false,shadow=false]
+\newcommand\BackgroundPicture[1]{%
+\setbeamertemplate{background}{%
+\parbox[c][\paperheight]{\paperwidth}{%
+\vfill \hfill \includegraphics[height=\paperheight]{#1}
+\hfill \vfill
+}}}
+
+%Content Starts Here <-------------------------------------------------------------------------------
+\title{NeSI Template}
+%\subtitle{Computational Science team}
+\author{Cool Staff Members use \LaTeX{} \\(cool.staff@nesi.org.nz)}
+\date{}
+
+\begin{document}
+\BackgroundPicture{NeSI/title.png}
+\begin{frame}[plain]
+  \vspace{+4cm}
+  \titlepage
+\end{frame}
+
+% This will generate the outline. If you have several topics, uncomment the multicols 
+\BackgroundPicture{NeSI/blank-01.png}
+\begin{frame}
+  \frametitle{Outline}
+  %\begin{multicols}{2} 
+  \tableofcontents
+  %\end{multicols}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Some Examples %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\subsection{About Something}
+% Include Graphics <---
+\begin{frame}[t]
+  \frametitle{About Something}
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{NeSI/nesi_logo.png}
+  \end{center}
+\end{frame}
+
+% List with bullets (itemize) <---
+% The [<+-| alert@+>] will create a new slide for each element with highlighting 
+\begin{frame}[t]
+  \frametitle{About Something}
+    \begin{block}{About Something}
+      \begin{itemize}%[<+-| alert@+>]
+	  \item foo
+	  \item bar
+	  \item baz
+	  \item qux
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+% List with numbers (enumerate) <---
+% The [<+-| alert@+>] will create a new slide for each element with highlighting 
+\begin{frame}[t]
+  \frametitle{About Something}
+    \begin{block}{About Something}
+      \begin{enumerate}%[<+-| alert@+>]
+	  \item inky
+	  \item pinky
+	  \item blinky
+	  \item clyde
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+% If you want to include some code (verbatim or listings) you will need to add "fragile" in the frame options <---
+\section{Examples}
+\subsection{verbatim example}
+\begin{frame}[fragile]
+  \frametitle{Verbatim example}
+    \begin{block}{Job Description Example : SMP}
+      \begin{small}
+        \begin{verbatim}
+#!/bin/bash
+#SBATCH -o /share/src/app/example/app-%j.%N.out
+#SBATCH -D /share/src/app/example
+#SBATCH -J MIGRATESMP
+#SBATCH --get-user-env
+#SBATCH --ntasks=1
+#SBATCH --cpu_bind=core
+#SBATCH --export=NONE
+#SBATCH --time=08:00:00
+ml load migrate/3.4.4-smp
+export OMP_NUM_THREADS=4
+srun migrate-n-thread parmfile.testml -nomenu
+      \end{verbatim}
+    \end{small}
+  \end{block}
+\end{frame}
+
+\subsection{listings example}
+\begin{frame}[fragile]
+  \frametitle{Listings example}
+  \begin{block}{Generate Trace File with ITAC in the Cluster - Non-instrumented}
+    \begin{footnotesize}
+      \lstset{language=bash,escapechar=@,style=customcode}
+      \begin{lstlisting}
+#!/bin/bash
+#SBATCH -J ITAC
+#SBATCH -A nesi99999
+#SBATCH --time=6:00:00
+#SBATCH --mem-per-cpu=6144
+#SBATCH -C ib
+#SBATCH --ntasks=48
+#SBATCH --nodes=2
+ml intel/2015a
+ml VTune/2015_update2
+ml itac/9.0.3.051
+source itacvars.sh impi4
+unset I_MPI_PMI_LIBRARY
+mpiexec.hydra -trace binary [my app options]
+      \end{lstlisting}
+    \end{footnotesize}
+  \end{block}
+\end{frame}
+
+\subsection{Divider examples}
+\BackgroundPicture{NeSI/divider-01.png}
+\begin{frame}[fragile]{}
+  \begin{center}
+    \Huge{\textbf{Divider 1 example}}
+  \end{center}
+\end{frame}
+
+\note[itemize]{
+\item The beauty of LXD is that you can run anywhere you running Linux.
+\item No HW acceleration requirements (VT)
+\item Can run inside VMs, all architectures, etc.
+}
+
+\BackgroundPicture{NeSI/divider-02.png}
+\begin{frame}[fragile]{}
+  \begin{center}
+    \Huge{\textbf{Divider 2 example}}
+  \end{center}
+\end{frame}
+
+\BackgroundPicture{NeSI/divider-03.png}
+\begin{frame}[fragile]{}
+  \begin{center}
+    \Huge{\textbf{Divider 3 example}}
+  \end{center}
+\end{frame}
+
+\BackgroundPicture{NeSI/divider-04.png}
+\begin{frame}[fragile]{}
+  \begin{center}
+    \Huge{\textbf{Divider 4 example}}
+  \end{center}
+\end{frame}
+
+\BackgroundPicture{NeSI/sidebar-01.png}
+\begin{frame}[t]{}
+  \frametitle{sidebar title}
+  \begin{columns}
+    \begin{column}{0.25\textwidth}
+  
+    \end{column}
+    \begin{column}{0.75\textwidth}\centering
+    \vspace*{+1.5cm}
+    \begin{Huge}
+      \begin{itemize}%[<+-| alert@+>]
+        \item a
+        \item b
+        \item c
+      \end{itemize}
+    \end{Huge}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\BackgroundPicture{NeSI/sidebar-02.png}
+\begin{frame}[t]{}
+  \frametitle{sidebar title}
+  \begin{columns}
+    \begin{column}{0.25\textwidth}
+  
+    \end{column}
+    \begin{column}{0.75\textwidth}\centering
+    \vspace*{+1.5cm}
+    \begin{Huge}
+      \begin{itemize}%[<+-| alert@+>]
+        \item a
+        \item b
+        \item c
+      \end{itemize}
+    \end{Huge}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\BackgroundPicture{NeSI/sidebar-03.png}
+\begin{frame}[t]{}
+  \frametitle{sidebar title}
+  \begin{columns}
+    \begin{column}{0.25\textwidth}
+  
+    \end{column}
+    \begin{column}{0.75\textwidth}\centering
+    \vspace*{+1.5cm}
+    \begin{Huge}
+      \begin{itemize}%[<+-| alert@+>]
+        \item a
+        \item b
+        \item c
+      \end{itemize}
+    \end{Huge}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\BackgroundPicture{NeSI/sidebar-04.png}
+\begin{frame}[t]{}
+  \frametitle{sidebar title}
+  \begin{columns}
+    \begin{column}{0.25\textwidth}
+  
+    \end{column}
+    \begin{column}{0.75\textwidth}\centering
+    \vspace*{+1.5cm}
+    \begin{Huge}
+      \begin{itemize}%[<+-| alert@+>]
+        \item a
+        \item b
+        \item c
+      \end{itemize}
+    \end{Huge}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\note[itemize]{
+\item a
+\item b
+\item c
+}
+
+% End <-----------------------------------------------------------------------------------------
+\BackgroundPicture{NeSI/blank-02.png}
+\begin{frame}[plain]
+  \begin{center}
+    \vspace*{+2cm}
+    {\Huge Thank You}\\
+    \vspace*{+1cm}
+    \includegraphics[width=100pt]{NeSI/nesi_logo.png}
+  \end{center}
+\end{frame}
+
+\end{document} 
